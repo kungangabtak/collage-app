@@ -5,34 +5,61 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Collage App</title>
+    <!-- Link to Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Link to Font Awesome for trash bin icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Photo Collage App</h1>
+        <h1>Bethany's Photo Collage App</h1>
     </header>
 
     <div class="controls">
-        <label for="size-select">Select Collage Size:</label>
-        <select id="size-select">
-            <option value="ipad">iPad (768x1024)</option>
-            <option value="laptop">Laptop (1366x768)</option>
-            <option value="instagram">Instagram Story (1080x1920)</option>
-            <option value="custom">Custom Size</option>
-        </select>
+        <div class="control-group">
+            <label for="size-select">Select Collage Size:</label>
+            <select id="size-select">
+                <optgroup label="iPad">
+                    <option value="ipad_portrait">iPad Portrait (768x1024)</option>
+                    <option value="ipad_landscape">iPad Landscape (1024x768)</option>
+                </optgroup>
+                <optgroup label="Laptop">
+                    <option value="laptop">Laptop (1366x768)</option>
+                </optgroup>
+                <optgroup label="Instagram Story">
+                    <option value="instagram_portrait">Instagram Story Portrait (1080x1920)</option>
+                    <option value="instagram_landscape">Instagram Story Landscape (1920x1080)</option>
+                </optgroup>
+                <option value="custom">Custom Size</option>
+            </select>
+        </div>
 
-        <div id="custom-size-inputs" class="hidden">
+        <div id="custom-size-inputs" class="control-group hidden">
             <input type="number" id="custom-width" placeholder="Width (px)">
             <input type="number" id="custom-height" placeholder="Height (px)">
             <button id="set-custom-size">Set Size</button>
         </div>
 
-        <input type="file" id="upload-input" accept="image/*" multiple>
-        <button id="download-btn">Download Collage</button>
+        <div class="control-group">
+            <label for="upload-input" class="upload-label">
+                <i class="fas fa-upload"></i> Upload Photos
+            </label>
+            <input type="file" id="upload-input" accept="image/*" multiple>
+        </div>
+
+        <div class="control-group">
+            <button id="download-btn"><i class="fas fa-download"></i> Download Collage</button>
+        </div>
     </div>
 
     <div id="collage-container">
         <div id="collage-area"></div>
+    </div>
+
+    <!-- Trash Bin -->
+    <div id="trash-bin">
+        <i class="fas fa-trash-alt"></i>
     </div>
 
     <!-- Include the script at the end of the body -->

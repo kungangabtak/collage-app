@@ -1,85 +1,223 @@
 /* styles.css */
 
-body {
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    padding: 0;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff; /* Changed to black */
+    color: #ffffff; /* Changed to white for readability */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Styling */
 header {
-    background-color: #4CAF50;
+    background-color: #1E90FF; /* Changed to DodgerBlue */
     color: white;
-    padding: 15px;
+    padding: 20px;
     text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+header h1 {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+/* Controls Panel Styling */
 .controls {
-    padding: 10px;
-    background-color: #fff;
+    padding: 15px 20px;
+    background-color: #1E90FF; /* Changed to match header blue */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.control-group {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
 }
 
 .controls label {
-    margin-right: 5px;
+    font-weight: 500;
+    color: #ffffff; /* Ensure labels are visible on blue background */
 }
 
-#custom-size-inputs input {
-    width: 100px;
-    padding: 5px;
+.controls select,
+.controls input[type="number"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    background-color: #ffffff; /* Light background for inputs */
+    color: #000000; /* Dark text for inputs */
 }
 
-.hidden {
-    display: none;
+.controls select:focus,
+.controls input[type="number"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.upload-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.upload-label:hover {
+    background-color: #45a049;
 }
 
 #upload-input {
-    padding: 5px;
+    display: none;
 }
 
 #download-btn {
-    padding: 5px 10px;
     background-color: #2196F3;
     color: white;
     border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 1rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
 }
 
 #download-btn:hover {
     background-color: #0b7dda;
 }
 
+#download-btn i {
+    font-size: 1.1rem;
+}
+
+/* Collage Area Styling */
 #collage-container {
+    flex: 1;
     padding: 20px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 #collage-area {
     position: relative;
-    background-color: #ddd;
-    border: 2px dashed #aaa;
-    width: 768px; /* Default iPad size */
-    height: 1024px; /* Default iPad size */
+    background-color: #ffffff; /* Changed to white */
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 768px; /* Default iPad Portrait size */
+    height: 1024px; /* Default iPad Portrait size */
     overflow: hidden;
+    border-radius: 8px;
+    transition: width 0.3s, height 0.3s;
 }
 
+/* Image Item Styling */
 .image-item {
     position: absolute;
     cursor: move;
     border: 2px solid #fff;
-    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    user-select: none;
+    border-radius: 4px;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .image-item.selected {
-    border: 2px solid #2196F3;
+    border-color: #2196F3;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
+.image-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 4px;
+    pointer-events: none; /* Prevent image dragging */
+}
+
+/* Resize Handle Styling */
+.image-item .resize-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: #43a2f0;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    cursor: se-resize;
+    right: -6px;
+    bottom: -6px;
+    transition: background-color 0.3s;
+}
+
+.image-item .resize-handle:hover {
+    background-color: #0b7dda;
+}
+
+/* Trash Bin Styling */
+#trash-bin {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: #f44336;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, transform 0.2s;
+    z-index: 1000; /* Ensures trash bin is always in front */
+}
+
+#trash-bin.active {
+    background-color: #d32f2f;
+    transform: translateX(-50%) scale(1.1); /* Enlarges when active */
+}
+
+#trash-bin i {
+    pointer-events: none;
+}
+
+/* Hidden Class */
+.hidden {
+    display: none;
+}
+
+/* Responsive Design */
 @media (max-width: 800px) {
     #collage-area {
-        width: 100%;
+        width: 90%;
         height: auto;
+    }
+
+    #trash-bin {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
     }
 }
