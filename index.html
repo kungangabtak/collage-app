@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Collage App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Photo Collage App</h1>
+    </header>
+
+    <div class="controls">
+        <label for="size-select">Select Collage Size:</label>
+        <select id="size-select">
+            <option value="ipad">iPad (768x1024)</option>
+            <option value="laptop">Laptop (1366x768)</option>
+            <option value="instagram">Instagram Story (1080x1920)</option>
+            <option value="custom">Custom Size</option>
+        </select>
+
+        <div id="custom-size-inputs" class="hidden">
+            <input type="number" id="custom-width" placeholder="Width (px)">
+            <input type="number" id="custom-height" placeholder="Height (px)">
+            <button id="set-custom-size">Set Size</button>
+        </div>
+
+        <input type="file" id="upload-input" accept="image/*" multiple>
+        <button id="download-btn">Download Collage</button>
+    </div>
+
+    <div id="collage-container">
+        <div id="collage-area"></div>
+    </div>
+
+    <!-- Include the script at the end of the body -->
+    <script src="script.js"></script>
+</body>
+</html>

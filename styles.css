@@ -1,0 +1,85 @@
+/* styles.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.controls {
+    padding: 10px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.controls label {
+    margin-right: 5px;
+}
+
+#custom-size-inputs input {
+    width: 100px;
+    padding: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+#upload-input {
+    padding: 5px;
+}
+
+#download-btn {
+    padding: 5px 10px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#download-btn:hover {
+    background-color: #0b7dda;
+}
+
+#collage-container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#collage-area {
+    position: relative;
+    background-color: #ddd;
+    border: 2px dashed #aaa;
+    width: 768px; /* Default iPad size */
+    height: 1024px; /* Default iPad size */
+    overflow: hidden;
+}
+
+.image-item {
+    position: absolute;
+    cursor: move;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.image-item.selected {
+    border: 2px solid #2196F3;
+}
+
+@media (max-width: 800px) {
+    #collage-area {
+        width: 100%;
+        height: auto;
+    }
+}
