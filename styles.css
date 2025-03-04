@@ -1,44 +1,63 @@
-/* styles.css */
+/* Optimized styles.css */
 
-/* Reset some default styles */
+/* CSS Reset and Base Styles */
+:root {
+    --primary-color: #07498b;
+    --primary-hover: #0b7dda;
+    --secondary-color: #4CAF50;
+    --secondary-hover: #45a049;
+    --accent-color: #43a2f0;
+    --text-light: #ffffff;
+    --text-dark: #000000;
+    --border-color: #ddd;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Hardware acceleration for smoother animations */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #ffffff; /* Changed to black */
-    color: #ffffff; /* Changed to white for readability */
+    background-color: var(--text-light);
+    color: var(--text-light);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Header Styling */
+/* Header Styles */
 header {
-    background-color: #1E90FF; /* Changed to DodgerBlue */
-    color: white;
+    background-color: var(--primary-color);
     padding: 20px;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
 }
 
 header h1 {
     font-weight: 700;
     font-size: 2rem;
+    font-family: Pacifico, cursive;
 }
 
-/* Controls Panel Styling */
+/* Controls Panel */
 .controls {
     padding: 15px 20px;
-    background-color: #1E90FF; /* Changed to match header blue */
+    background-color: var(--primary-color);
     display: flex;
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
 }
 
 .control-group {
@@ -49,102 +68,109 @@ header h1 {
 
 .controls label {
     font-weight: 500;
-    color: #ffffff; /* Ensure labels are visible on blue background */
+    color: var(--text-light);
 }
 
+/* Form Controls */
 .controls select,
 .controls input[type="number"] {
     padding: 8px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 1rem;
-    transition: border-color 0.3s;
-    background-color: #ffffff; /* Light background for inputs */
-    color: #000000; /* Dark text for inputs */
+    background-color: var(--text-light);
+    color: var(--text-dark);
+    transition: border-color var(--transition-fast);
 }
 
 .controls select:focus,
 .controls input[type="number"]:focus {
-    border-color: #4CAF50;
+    border-color: var(--secondary-color);
     outline: none;
 }
 
-.upload-label {
+/* Upload and Download Buttons */
+.upload-label,
+#download-btn,
+#set-custom-size {
     display: flex;
     align-items: center;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    padding: 8px 12px;
+    gap: 5px;
+    padding: 8px 16px;
     border-radius: 4px;
-    transition: background-color 0.3s;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    border: none;
+    color: var(--text-light);
+}
+
+.upload-label {
+    background-color: var(--secondary-color);
 }
 
 .upload-label:hover {
-    background-color: #45a049;
+    background-color: var(--secondary-hover);
+}
+
+#download-btn {
+    background-color: var(--accent-color);
+}
+
+#download-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+#set-custom-size {
+    background-color: var(--secondary-color);
+}
+
+#set-custom-size:hover {
+    background-color: var(--secondary-hover);
 }
 
 #upload-input {
     display: none;
 }
 
-#download-btn {
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: background-color 0.3s;
-}
-
-#download-btn:hover {
-    background-color: #0b7dda;
-}
-
-#download-btn i {
-    font-size: 1.1rem;
-}
-
-/* Collage Area Styling */
+/* Collage Area */
 #collage-container {
     flex: 1;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #f5f5f5;
 }
 
 #collage-area {
     position: relative;
-    background-color: #ffffff; /* Changed to white */
-    border: 2px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 768px; /* Default iPad Portrait size */
-    height: 1024px; /* Default iPad Portrait size */
+    background-color: var(--text-light);
+    border: 2px solid var(--border-color);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
     border-radius: 8px;
-    transition: width 0.3s, height 0.3s;
+    transition: width var(--transition-normal), height var(--transition-normal);
+    will-change: transform;
 }
 
-/* Image Item Styling */
+/* Image Items */
 .image-item {
     position: absolute;
     cursor: move;
-    border: 2px solid #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border: 2px solid var(--text-light);
+    box-shadow: var(--shadow-sm);
     user-select: none;
     border-radius: 4px;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: transform var(--transition-normal), border-color var(--transition-fast), opacity var(--transition-normal);
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    overflow: hidden; /* Ensure image stays within bounds */
 }
 
 .image-item.selected {
-    border-color: #2196F3;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow-lg);
 }
 
 .image-item img {
@@ -152,28 +178,193 @@ header h1 {
     height: 100%;
     display: block;
     border-radius: 4px;
-    pointer-events: none; /* Prevent image dragging */
+    pointer-events: none;
+    backface-visibility: hidden;
+    object-fit: cover; /* Ensures the image fills the container properly */
 }
 
-/* Resize Handle Styling */
-.image-item .resize-handle {
+/* Control Handles */
+.image-item .resize-handle,
+.image-item .rotate-handle {
     position: absolute;
-    width: 12px;
-    height: 12px;
-    background-color: #43a2f0;
-    border: 2px solid #fff;
+    width: 16px;
+    height: 16px;
+    background-color: var(--accent-color);
+    border: 2px solid var(--text-light);
     border-radius: 50%;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    will-change: transform;
+    z-index: 10;
+}
+
+.resize-handle {
+    right: -8px;
+    bottom: -8px;
     cursor: se-resize;
-    right: -6px;
-    bottom: -6px;
-    transition: background-color 0.3s;
 }
 
-.image-item .resize-handle:hover {
-    background-color: #0b7dda;
+.rotate-handle {
+    left: -8px;
+    top: -8px;
+    cursor: grab;
 }
 
-/* Trash Bin Styling */
+.resize-handle:hover,
+.rotate-handle:hover {
+    background-color: var(--primary-hover);
+    transform: scale(1.2);
+}
+
+/* Layer Controls */
+.layer-controls {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    display: none;
+    gap: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px 8px;
+    border-radius: 4px;
+    z-index: 1000;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.image-item.selected .layer-controls {
+    display: flex;
+}
+
+.layer-controls button {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 3px;
+    padding: 3px 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color var(--transition-fast);
+}
+
+.layer-controls button:hover {
+    background-color: var(--primary-hover);
+}
+
+.layer-counter {
+    color: var(--text-light);
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+/* Layer Panel */
+#layer-controls-panel {
+    position: fixed;
+    right: -300px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    background-color: rgba(7, 73, 139, 0.95);
+    padding: 15px;
+    border-radius: 8px 0 0 8px;
+    color: var(--text-light);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    max-height: 80vh;
+    overflow-y: auto;
+    transition: right var(--transition-normal);
+    z-index: 1000;
+}
+
+#layer-controls-panel.expanded {
+    right: 0;
+}
+
+#layer-panel-toggle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(7, 73, 139, 0.95);
+    color: var(--text-light);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 8px 0 0 8px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    transition: right var(--transition-normal);
+}
+
+#layer-panel-toggle i {
+    transition: transform var(--transition-normal);
+}
+
+#layer-panel-toggle.expanded i {
+    transform: rotate(180deg);
+}
+
+#layer-controls-panel h3 {
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 8px;
+}
+
+/* Layer Items with Drag Support */
+.layer-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    cursor: grab;
+    touch-action: none;
+}
+
+.layer-item.dragging {
+    opacity: 0.5;
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: grabbing;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.layer-item.drag-over {
+    border-top: 2px solid var(--accent-color);
+}
+
+.layer-item.selected {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--text-light);
+}
+
+.layer-item .layer-buttons {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.layer-item button {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 3px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-fast);
+    min-width: 28px;
+    height: 28px;
+}
+
+.layer-item button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Trash Bin */
 #trash-bin {
     position: fixed;
     bottom: 20px;
@@ -186,38 +377,135 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: var(--text-light);
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: background-color 0.3s, transform 0.2s;
-    z-index: 1000; /* Ensures trash bin is always in front */
+    box-shadow: var(--shadow-md);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    z-index: 1000;
 }
 
 #trash-bin.active {
     background-color: #d32f2f;
-    transform: translateX(-50%) scale(1.1); /* Enlarges when active */
+    transform: translateX(-50%) scale(1.1);
 }
 
 #trash-bin i {
     pointer-events: none;
 }
 
-/* Hidden Class */
+/* Preview Mode */
+.preview-mode .resize-handle,
+.preview-mode .rotate-handle,
+.preview-mode #layer-panel-toggle,
+.preview-mode #layer-controls-panel,
+.preview-mode #trash-bin {
+    display: none !important;
+}
+
+.preview-mode .image-item {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+#exit-preview {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(7, 73, 139, 0.8);
+    color: var(--text-light);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+    font-size: 14px;
+    transition: background-color var(--transition-fast);
+}
+
+#exit-preview:hover {
+    background-color: var(--primary-color);
+}
+
+.preview-mode #exit-preview {
+    display: block;
+}
+
+/* Utility Classes */
 .hidden {
     display: none;
 }
 
 /* Responsive Design */
 @media (max-width: 800px) {
-    #collage-area {
-        width: 90%;
-        height: auto;
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
     }
 
+    .control-group {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    #collage-container {
+        padding: 10px;
+    }
+    
     #trash-bin {
         width: 50px;
         height: 50px;
         font-size: 1.2rem;
+    }
+    
+    #layer-controls-panel {
+        width: 250px;
+    }
+    
+    .layer-item {
+        flex-wrap: wrap;
+    }
+    
+    .layer-item .layer-buttons {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .controls {
+        padding: 10px;
+    }
+    
+    #layer-controls-panel {
+        width: 200px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .controls,
+    #layer-controls-panel,
+    #layer-panel-toggle,
+    #trash-bin,
+    .resize-handle,
+    .rotate-handle {
+        display: none !important;
+    }
+    
+    #collage-area {
+        border: none;
+        box-shadow: none;
+    }
+    
+    .image-item {
+        border: none !important;
+        box-shadow: none !important;
     }
 }

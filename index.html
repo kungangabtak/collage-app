@@ -6,19 +6,305 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Collage App</title>
     <!-- Link to Google Fonts for modern typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Link to Font Awesome for trash bin icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Pacifico&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Link to Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <!-- Add this to your styles.css file -->
+    <style>
+        /* Enhanced Header Styles */
+        header {
+            background: linear-gradient(135deg, #0a4d8c 0%, #1e88e5 100%);
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative elements for header */
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -70px;
+            right: -70px;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        header .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-weight: 700;
+            font-size: 2.3rem;
+            font-family: 'Pacifico', cursive;
+            margin-bottom: 8px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        header p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 0;
+        }
+        
+        .app-logo {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 8px;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+        
+        /* Enhanced Controls */
+        .controls {
+            background: linear-gradient(135deg, #07498b 0%, #0d62a8 100%);
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .control-group:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .controls label {
+            font-weight: 600;
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+        }
+        
+        /* Buttons */
+        .upload-label,
+        #download-btn,
+        #set-custom-size {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            color: var(--text-light);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .upload-label {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+        
+        .upload-label:hover {
+            background: linear-gradient(135deg, #45a049 0%, #3d8b41 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        #download-btn {
+            background: linear-gradient(135deg, #43a2f0 0%, #2196F3 100%);
+        }
+        
+        #download-btn:hover {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        #set-custom-size {
+            background: linear-gradient(135deg, #ff9800 0%, #F57C00 100%);
+        }
+        
+        #set-custom-size:hover {
+            background: linear-gradient(135deg, #F57C00 0%, #E65100 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Collage Area Styling */
+        #collage-container {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f5fa;
+            background-image: linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5), 
+                              linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        
+        #collage-area {
+            position: relative;
+            background-color: white;
+            border: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Footer Section */
+        footer {
+            background: linear-gradient(135deg, #0a4d8c 0%, #07498b 100%);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Example Gallery */
+        .example-gallery {
+            background-color: #f0f5fa;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .example-gallery h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #07498b;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+        
+        .gallery-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Enhanced Trash Bin */
+        #trash-bin {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 68px;
+            height: 68px;
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+        
+        #trash-bin.active {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            transform: translateX(-50%) scale(1.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        #trash-bin:hover {
+            transform: translateX(-50%) scale(1.08);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 800px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .app-logo {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .gallery-item {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Bethany's Photo Collage App</h1>
+        <div class="header-content">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTQwMCAzMkg0OGMtOC44IDAtMTYgNy4yLTE2IDE2djQxNmMwIDguOCA3LjIgMTYgMTYgMTZoMzUyYzguOCAwIDE2LTcuMiAxNi0xNlY0OGMwLTguOC03LjItMTYtMTYtMTZ6bS01NiA0MDBIMTAzLjhMMjUwIDIwOC40IDMxOC41IDI5OCA0MzIgMTE1LjJ2MzE2Ljh6TTEyOCAxMjBjMC0xMy4zIDEwLjctMjQgMjQtMjRzMjQgMTAuNyAyNCAyNC0xMC43IDI0LTI0IDI0LTI0LTEwLjctMjQtMjR6Ii8+PC9zdmc+" alt="Collage App Logo" class="app-logo">
+            <h1>Bethany's Photo Collage App</h1>
+            <p>Create beautiful photo collages for social media, prints, and more!</p>
+        </div>
     </header>
 
     <div class="controls">
         <div class="control-group">
-            <label for="size-select">Select Collage Size:</label>
+            <label for="size-select"><i class="fas fa-expand-arrows-alt"></i> Collage Size:</label>
             <select id="size-select">
                 <optgroup label="iPad">
                     <option value="ipad_portrait">iPad Portrait (768x1024)</option>
@@ -36,9 +322,9 @@
         </div>
 
         <div id="custom-size-inputs" class="control-group hidden">
-            <input type="number" id="custom-width" placeholder="Width (px)">
-            <input type="number" id="custom-height" placeholder="Height (px)">
-            <button id="set-custom-size">Set Size</button>
+            <input type="number" id="custom-width" placeholder="Width (px)" min="100" max="3000">
+            <input type="number" id="custom-height" placeholder="Height (px)" min="100" max="3000">
+            <button id="set-custom-size"><i class="fas fa-check"></i> Set</button>
         </div>
 
         <div class="control-group">
@@ -49,7 +335,7 @@
         </div>
 
         <div class="control-group">
-            <button id="download-btn"><i class="fas fa-download"></i> Download Collage</button>
+            <button id="download-btn"><i class="fas fa-download"></i> Download</button>
         </div>
     </div>
 
@@ -57,8 +343,33 @@
         <div id="collage-area"></div>
     </div>
 
+    <!-- Add example gallery section -->
+    <div class="example-gallery">
+        <h2>Inspiration Gallery</h2>
+        <div class="gallery-items">
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Travel+Collage" alt="Travel Collage Example">
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Family+Photos" alt="Family Photos Example">
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Nature+Collection" alt="Nature Collection Example">
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Instagram+Story" alt="Instagram Story Example">
+            </div>
+        </div>
+    </div>
+
+    <!-- Add a footer -->
+    <footer>
+        <p>Created by Bethany • © 2025</p>
+        <p>Upload, arrange, and download beautiful photo collages in seconds!</p>
+    </footer>
+
     <!-- Trash Bin -->
-    <div id="trash-bin">
+    <div id="trash-bin" title="Drag images here to delete or click to clear all">
         <i class="fas fa-trash-alt"></i>
     </div>
 
