@@ -1,4 +1,5 @@
-# Bethany's Collage Studio
+
+Collage Studio
 
 ## How to open the app (no tech skills needed)
 
