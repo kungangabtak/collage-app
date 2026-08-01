@@ -552,7 +552,10 @@ function commitTextEdit() {
 }
 
 canvasEl.addEventListener('dblclick', (e) => {
-    const layerEl = e.target.closest('.layer.text-layer');
+    // the pointer capture taken in pointerdown retargets this event to the
+    // canvas itself, so hit-test the pointer position to find the text layer
+    const hit = document.elementFromPoint(e.clientX, e.clientY) || e.target;
+    const layerEl = hit.closest('.layer.text-layer');
     if (!layerEl) return;
     const layer = byId(layerEl.dataset.id);
     if (layer) startTextEdit(layer);
