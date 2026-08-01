@@ -320,6 +320,13 @@ button svg, .tab svg, .empty-hint svg {
     background-color: #ffffff;
     box-shadow: var(--canvas-shadow);
     touch-action: none;
+}
+
+/* layers live in #clip so photos crop at the canvas edge while the selection
+   box, handles, and drag badge stay visible outside it */
+#clip {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
 }
 
@@ -413,12 +420,36 @@ button svg, .tab svg, .empty-hint svg {
     transition: transform 0.12s var(--ease-out);
 }
 
-.handle:hover { transform: translate(-50%, -50%) scale(1.25) !important; }
+.handle::after {
+    /* enlarged invisible pointer target for mouse and touch */
+    content: "";
+    position: absolute;
+    inset: calc(-8px / var(--zoom));
+}
+
+.handle:hover,
+.handle:active { transform: translate(-50%, -50%) scale(1.25) !important; }
+
+.handle:active { background: var(--accent); }
 
 .handle[data-handle="nw"] { top: 0; left: 0; transform: translate(-50%, -50%); cursor: nwse-resize; }
 .handle[data-handle="ne"] { top: 0; left: 100%; transform: translate(-50%, -50%); cursor: nesw-resize; }
 .handle[data-handle="sw"] { top: 100%; left: 0; transform: translate(-50%, -50%); cursor: nesw-resize; }
 .handle[data-handle="se"] { top: 100%; left: 100%; transform: translate(-50%, -50%); cursor: nwse-resize; }
+
+/* side handles: compact pills on each edge midpoint (photo layers only) */
+.handle.side { border-radius: 999px; }
+.handle[data-handle="n"],
+.handle[data-handle="s"] { width: calc(16px / var(--zoom)); height: calc(7px / var(--zoom)); }
+.handle[data-handle="e"],
+.handle[data-handle="w"] { width: calc(7px / var(--zoom)); height: calc(16px / var(--zoom)); }
+
+.handle[data-handle="n"] { top: 0; left: 50%; transform: translate(-50%, -50%); cursor: ns-resize; }
+.handle[data-handle="s"] { top: 100%; left: 50%; transform: translate(-50%, -50%); cursor: ns-resize; }
+.handle[data-handle="w"] { top: 50%; left: 0; transform: translate(-50%, -50%); cursor: ew-resize; }
+.handle[data-handle="e"] { top: 50%; left: 100%; transform: translate(-50%, -50%); cursor: ew-resize; }
+
+#selection-box.is-text .handle.side { display: none; }
 
 .handle.rotate {
     top: calc(-26px / var(--zoom));

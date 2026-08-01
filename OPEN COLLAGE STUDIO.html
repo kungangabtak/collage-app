@@ -88,14 +88,19 @@
         <div id="viewport">
             <div id="stage">
                 <div id="canvas" style="--zoom:1">
+                    <div id="clip"></div>
                     <div id="guide-v" class="guide guide-v" hidden></div>
                     <div id="guide-h" class="guide guide-h" hidden></div>
                     <div id="drag-badge" hidden></div>
                     <div id="selection-box" hidden>
                         <div class="handle" data-handle="nw"></div>
+                        <div class="handle side" data-handle="n"></div>
                         <div class="handle" data-handle="ne"></div>
-                        <div class="handle" data-handle="sw"></div>
+                        <div class="handle side" data-handle="e"></div>
                         <div class="handle" data-handle="se"></div>
+                        <div class="handle side" data-handle="s"></div>
+                        <div class="handle" data-handle="sw"></div>
+                        <div class="handle side" data-handle="w"></div>
                         <div class="handle rotate" data-handle="rot"></div>
                     </div>
                 </div>
@@ -273,7 +278,7 @@
                             <button id="duplicate-btn" class="btn small"><svg><use href="#i-copy"/></svg><span>Duplicate</span></button>
                             <button id="delete-btn" class="btn small danger"><svg><use href="#i-trash"/></svg><span>Delete</span></button>
                         </div>
-                        <p class="hint">Hold <kbd>Shift</kbd> while resizing to lock the aspect ratio, or while rotating to snap to 15°. Nudge with arrow keys.</p>
+                        <p class="hint">Drag a corner to resize both dimensions, or a side handle to change just the width or height. Hold <kbd>Shift</kbd> to keep the aspect ratio, or to snap rotation to 15°. Nudge with arrow keys.</p>
                     </div>
 
                     <div id="text-props" hidden>

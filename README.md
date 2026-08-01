@@ -31,7 +31,7 @@ Any static file server works too, e.g. `python3 -m http.server 5500` or `npx ser
 - **Canvas presets** for Instagram posts/stories, Pinterest pins, and print sizes (4×6, 8×10, A4) plus fully custom dimensions
 - **Backgrounds** — any solid color, one-tap swatches and gradients, or full transparency
 - **Zoom-to-fit workspace** — large canvases scale to your screen while exporting at full resolution (0.5×/1×/2× scale, PNG or JPEG)
-- **Fluid editing** — drag, resize (corner handles), and rotate with a Figma-style selection box; smart snap guides against canvas edges, centers, and other photos
+- **Fluid editing** — drag, resize, and rotate with a Figma-style selection box; smart snap guides against canvas edges, centers, and other photos. Drag a corner handle to change both dimensions, or a side handle (edge midpoint) to change only the width or height — the opposite edge stays put, and the centered crop adjusts without stretching the photo. Hold `Shift` to preserve the aspect ratio
 - **Auto layouts** — arrange all photos into a Grid, Columns, Rows, Spotlight, or playful Scatter with adjustable spacing, animated into place
 - **Filters** — one-tap presets (Original, Vivid, Warm, Mono, Vintage, Fade) plus brightness, contrast, and saturation sliders
 - **Photo styling** — borders (width + color), drop shadows, corner radius, opacity, rotation, flips; borders + Scatter = instant polaroid wall

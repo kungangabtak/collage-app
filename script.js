@@ -78,6 +78,7 @@ const $ = (id) => document.getElementById(id);
 const viewportEl = $('viewport');
 const stageEl = $('stage');
 const canvasEl = $('canvas');
+const clipEl = $('clip');
 const selectionEl = $('selection-box');
 const guideV = $('guide-v');
 const guideH = $('guide-h');
@@ -362,7 +363,7 @@ function renderLayers() {
             el = createLayerEl(layer);
             layerEls.set(layer.id, el);
         }
-        canvasEl.appendChild(el); // re-append: DOM order == stacking order
+        clipEl.appendChild(el); // re-append: DOM order == stacking order
         syncLayerEl(layer);
     }
     // keep chrome elements above the layers
@@ -377,6 +378,7 @@ function syncSelection() {
         return;
     }
     selectionEl.hidden = false;
+    selectionEl.classList.toggle('is-text', layer.type === 'text');
     selectionEl.style.width = `${layer.w}px`;
     selectionEl.style.height = `${layer.h}px`;
     selectionEl.style.transform = `translate3d(${layer.x}px, ${layer.y}px, 0) rotate(${layer.rotation}deg)`;
@@ -591,10 +593,13 @@ canvasEl.addEventListener('pointerdown', (e) => {
                 moved: false
             };
         } else {
-            const sx = kind.includes('e') ? 1 : -1;
-            const sy = kind.includes('s') ? 1 : -1;
+            // corners drag both axes; side handles (n/s/e/w) leave one axis at 0
+            const sx = kind.includes('e') ? 1 : kind.includes('w') ? -1 : 0;
+            const sy = kind.includes('s') ? 1 : kind.includes('n') ? -1 : 0;
+            if (layer.type === 'text' && (!sx || !sy)) return; // text scales from corners only
             const rad = layer.rotation * Math.PI / 180;
-            // fixed (opposite) corner in canvas coordinates
+            // fixed point in canvas coordinates: the opposite corner, or for a
+            // side handle the midpoint of the opposite edge
             const ox = -sx * layer.w / 2;
             const oy = -sy * layer.h / 2;
             drag = {
@@ -653,8 +658,10 @@ function applyDrag() {
         const dy = p.y - drag.fy;
         const cos = Math.cos(-drag.rad);
         const sin = Math.sin(-drag.rad);
-        let lw = (dx * cos - dy * sin) * drag.sx;
-        let lh = (dx * sin + dy * cos) * drag.sy;
+        // pointer offset from the fixed point in the layer's local axes; a zero
+        // sx/sy (side handle) keeps that dimension at its original size
+        let lw = drag.sx ? (dx * cos - dy * sin) * drag.sx : drag.origW;
+        let lh = drag.sy ? (dx * sin + dy * cos) * drag.sy : drag.origH;
         lw = Math.max(MIN_LAYER_SIZE, lw);
         lh = Math.max(MIN_LAYER_SIZE, lh);
         if (L.type === 'text') {
@@ -667,7 +674,18 @@ function applyDrag() {
             showBadge(drag.fx, L.y, `${L.fontSize} px`);
         } else {
             if (e.shiftKey) {
-                if (lw / drag.aspect > lh) lh = lw / drag.aspect;
+                if (!drag.sx || !drag.sy) {
+                    // side handle: scale both axes from the dragged one; the
+                    // perpendicular axis grows evenly around the fixed edge's
+                    // midpoint because the center offset along it stays 0
+                    const s = Math.max(
+                        drag.sx ? lw / drag.origW : lh / drag.origH,
+                        MIN_LAYER_SIZE / drag.origW,
+                        MIN_LAYER_SIZE / drag.origH
+                    );
+                    lw = drag.origW * s;
+                    lh = drag.origH * s;
+                } else if (lw / drag.aspect > lh) lh = lw / drag.aspect;
                 else lw = lh * drag.aspect;
             }
             L.w = lw;
