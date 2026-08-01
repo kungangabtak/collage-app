@@ -2,378 +2,343 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Collage App</title>
-    <!-- Link to Google Fonts for modern typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Pacifico&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Link to Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Bethany's Collage Studio</title>
+    <meta name="color-scheme" content="dark light">
+    <script>
+        // apply a stored theme choice before first paint so there is no flash
+        try {
+            var storedTheme = localStorage.getItem('collage-theme');
+            if (storedTheme === 'light' || storedTheme === 'dark') {
+                document.documentElement.dataset.theme = storedTheme;
+            }
+        } catch (e) { /* storage unavailable — follow the OS preference */ }
+    </script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='8' y='8' width='40' height='40' rx='9' fill='%23e08a5e'/><rect x='52' y='8' width='40' height='40' rx='9' fill='%23cf6d8e'/><rect x='8' y='52' width='40' height='40' rx='9' fill='%23f2b26b'/><rect x='52' y='52' width='40' height='40' rx='9' fill='%23b95573'/></svg>">
     <link rel="stylesheet" href="styles.css">
-    <!-- Add this to your styles.css file -->
-    <style>
-        /* Enhanced Header Styles */
-        header {
-            background: linear-gradient(135deg, #0a4d8c 0%, #1e88e5 100%);
-            padding: 25px 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Decorative elements for header */
-        header::before {
-            content: "";
-            position: absolute;
-            top: -50px;
-            left: -50px;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        
-        header::after {
-            content: "";
-            position: absolute;
-            bottom: -70px;
-            right: -70px;
-            width: 250px;
-            height: 250px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        
-        header .header-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        header h1 {
-            font-weight: 700;
-            font-size: 2.3rem;
-            font-family: 'Pacifico', cursive;
-            margin-bottom: 8px;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        header p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-top: 0;
-        }
-        
-        .app-logo {
-            width: 52px;
-            height: 52px;
-            margin-bottom: 8px;
-            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
-        }
-        
-        /* Enhanced Controls */
-        .controls {
-            background: linear-gradient(135deg, #07498b 0%, #0d62a8 100%);
-            padding: 18px 24px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            flex-wrap: wrap;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.08);
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .control-group:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-        
-        .controls label {
-            font-weight: 600;
-            color: var(--text-light);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.95rem;
-        }
-        
-        /* Buttons */
-        .upload-label,
-        #download-btn,
-        #set-custom-size {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            color: var(--text-light);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .upload-label {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-        }
-        
-        .upload-label:hover {
-            background: linear-gradient(135deg, #45a049 0%, #3d8b41 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        #download-btn {
-            background: linear-gradient(135deg, #43a2f0 0%, #2196F3 100%);
-        }
-        
-        #download-btn:hover {
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        #set-custom-size {
-            background: linear-gradient(135deg, #ff9800 0%, #F57C00 100%);
-        }
-        
-        #set-custom-size:hover {
-            background: linear-gradient(135deg, #F57C00 0%, #E65100 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Collage Area Styling */
-        #collage-container {
-            flex: 1;
-            padding: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f5fa;
-            background-image: linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5), 
-                              linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-        }
-        
-        #collage-area {
-            position: relative;
-            background-color: white;
-            border: none;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            overflow: hidden;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-        
-        /* Footer Section */
-        footer {
-            background: linear-gradient(135deg, #0a4d8c 0%, #07498b 100%);
-            padding: 20px;
-            text-align: center;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        footer p {
-            margin: 5px 0;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        /* Example Gallery */
-        .example-gallery {
-            background-color: #f0f5fa;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        
-        .example-gallery h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: #07498b;
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-        }
-        
-        .gallery-items {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        
-        .gallery-item {
-            width: 250px;
-            height: 250px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* Enhanced Trash Bin */
-        #trash-bin {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 68px;
-            height: 68px;
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000;
-        }
-        
-        #trash-bin.active {
-            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
-            transform: translateX(-50%) scale(1.15);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-        }
-        
-        #trash-bin:hover {
-            transform: translateX(-50%) scale(1.08);
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 800px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .app-logo {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .gallery-item {
-                width: 200px;
-                height: 200px;
-            }
-        }
-    </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTQwMCAzMkg0OGMtOC44IDAtMTYgNy4yLTE2IDE2djQxNmMwIDguOCA3LjIgMTYgMTYgMTZoMzUyYzguOCAwIDE2LTcuMiAxNi0xNlY0OGMwLTguOC03LjItMTYtMTYtMTZ6bS01NiA0MDBIMTAzLjhMMjUwIDIwOC40IDMxOC41IDI5OCA0MzIgMTE1LjJ2MzE2Ljh6TTEyOCAxMjBjMC0xMy4zIDEwLjctMjQgMjQtMjRzMjQgMTAuNyAyNCAyNC0xMC43IDI0LTI0IDI0LTI0LTEwLjctMjQtMjR6Ii8+PC9zdmc+" alt="Collage App Logo" class="app-logo">
-            <h1>Bethany's Photo Collage App</h1>
-            <p>Create beautiful photo collages for social media, prints, and more!</p>
+
+    <!-- Inline SVG icon sprite (self-contained, no CDN needed) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+            <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+            <symbol id="i-undo" viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></symbol>
+            <symbol id="i-redo" viewBox="0 0 24 24"><polyline points="15 14 20 9 15 4"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/></symbol>
+            <symbol id="i-zoom-in" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></symbol>
+            <symbol id="i-zoom-out" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></symbol>
+            <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
+            <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+            <symbol id="i-up" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></symbol>
+            <symbol id="i-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+            <symbol id="i-rotate-cw" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
+            <symbol id="i-rotate-ccw" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></symbol>
+            <symbol id="i-flip-h" viewBox="0 0 24 24"><path d="M8 7 3 12l5 5V7z"/><path d="m16 7 5 5-5 5V7z"/><line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="3 3"/></symbol>
+            <symbol id="i-flip-v" viewBox="0 0 24 24"><path d="M7 8l5-5 5 5H7z"/><path d="M7 16l5 5 5-5H7z"/><line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="3 3"/></symbol>
+            <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol>
+            <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+            <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+            <symbol id="i-fit" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
+            <symbol id="i-swap" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+            <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+            <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+            <symbol id="i-type" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+        </defs>
+    </svg>
+
+    <header class="topbar">
+        <div class="brand">
+            <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
+                <rect x="8" y="8" width="40" height="40" rx="10" fill="url(#brand-grad-a)"/>
+                <rect x="52" y="8" width="40" height="40" rx="10" fill="url(#brand-grad-b)"/>
+                <rect x="8" y="52" width="40" height="40" rx="10" fill="url(#brand-grad-b)"/>
+                <rect x="52" y="52" width="40" height="40" rx="10" fill="url(#brand-grad-a)"/>
+                <defs>
+                    <linearGradient id="brand-grad-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e08a5e"/><stop offset="1" stop-color="#f2b26b"/></linearGradient>
+                    <linearGradient id="brand-grad-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cf6d8e"/><stop offset="1" stop-color="#b95573"/></linearGradient>
+                </defs>
+            </svg>
+            <span class="brand-name">Bethany's <strong>Collage Studio</strong></span>
+        </div>
+
+        <div class="top-group" role="group" aria-label="History">
+            <button id="undo-btn" class="icon-btn" title="Undo (Cmd/Ctrl+Z)" disabled><svg><use href="#i-undo"/></svg></button>
+            <button id="redo-btn" class="icon-btn" title="Redo (Shift+Cmd/Ctrl+Z)" disabled><svg><use href="#i-redo"/></svg></button>
+        </div>
+
+        <div class="top-group zoom-group" role="group" aria-label="Zoom">
+            <button id="zoom-out-btn" class="icon-btn" title="Zoom out"><svg><use href="#i-zoom-out"/></svg></button>
+            <button id="zoom-fit-btn" class="zoom-label" title="Fit to screen">100%</button>
+            <button id="zoom-in-btn" class="icon-btn" title="Zoom in"><svg><use href="#i-zoom-in"/></svg></button>
+        </div>
+
+        <div class="top-actions">
+            <button id="upload-btn" class="btn"><svg><use href="#i-upload"/></svg><span>Add photos</span></button>
+            <button id="add-text-btn" class="btn"><svg><use href="#i-type"/></svg><span>Add text</span></button>
+            <button id="download-btn" class="btn primary"><svg><use href="#i-download"/></svg><span>Download</span></button>
+            <button id="theme-toggle" class="icon-btn" title="Switch theme" aria-label="Switch theme"><svg><use href="#i-sun"/></svg></button>
+            <button id="sidebar-toggle" class="icon-btn mobile-only" title="Toggle panel"><svg><use href="#i-menu"/></svg></button>
         </div>
     </header>
 
-    <div class="controls">
-        <div class="control-group">
-            <label for="size-select"><i class="fas fa-expand-arrows-alt"></i> Collage Size:</label>
-            <select id="size-select">
-                <optgroup label="iPad">
-                    <option value="ipad_portrait">iPad Portrait (768x1024)</option>
-                    <option value="ipad_landscape">iPad Landscape (1024x768)</option>
-                </optgroup>
-                <optgroup label="Laptop">
-                    <option value="laptop">Laptop (1366x768)</option>
-                </optgroup>
-                <optgroup label="Instagram Story">
-                    <option value="instagram_portrait">Instagram Story Portrait (1080x1920)</option>
-                    <option value="instagram_landscape">Instagram Story Landscape (1920x1080)</option>
-                </optgroup>
-                <option value="custom">Custom Size</option>
-            </select>
-        </div>
-
-        <div id="custom-size-inputs" class="control-group hidden">
-            <input type="number" id="custom-width" placeholder="Width (px)" min="100" max="3000">
-            <input type="number" id="custom-height" placeholder="Height (px)" min="100" max="3000">
-            <button id="set-custom-size"><i class="fas fa-check"></i> Set</button>
-        </div>
-
-        <div class="control-group">
-            <label for="upload-input" class="upload-label">
-                <i class="fas fa-upload"></i> Upload Photos
-            </label>
-            <input type="file" id="upload-input" accept="image/*" multiple>
-        </div>
-
-        <div class="control-group">
-            <button id="download-btn"><i class="fas fa-download"></i> Download</button>
-        </div>
-    </div>
-
-    <div id="collage-container">
-        <div id="collage-area"></div>
-    </div>
-
-    <!-- Add example gallery section -->
-    <div class="example-gallery">
-        <h2>Inspiration Gallery</h2>
-        <div class="gallery-items">
-            <div class="gallery-item">
-                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Travel+Collage" alt="Travel Collage Example">
+    <main class="workspace">
+        <div id="viewport">
+            <div id="stage">
+                <div id="canvas" style="--zoom:1">
+                    <div id="guide-v" class="guide guide-v" hidden></div>
+                    <div id="guide-h" class="guide guide-h" hidden></div>
+                    <div id="drag-badge" hidden></div>
+                    <div id="selection-box" hidden>
+                        <div class="handle" data-handle="nw"></div>
+                        <div class="handle" data-handle="ne"></div>
+                        <div class="handle" data-handle="sw"></div>
+                        <div class="handle" data-handle="se"></div>
+                        <div class="handle rotate" data-handle="rot"></div>
+                    </div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Family+Photos" alt="Family Photos Example">
-            </div>
-            <div class="gallery-item">
-                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Nature+Collection" alt="Nature Collection Example">
-            </div>
-            <div class="gallery-item">
-                <img src="https://via.placeholder.com/250x250/f5f5f5/888888?text=Instagram+Story" alt="Instagram Story Example">
+
+            <div id="empty-state">
+                <div class="empty-card">
+                    <svg class="empty-icon"><use href="#i-image"/></svg>
+                    <h2>Start your collage</h2>
+                    <p>Drag &amp; drop photos anywhere, paste from your clipboard, or</p>
+                    <button id="empty-upload-btn" class="btn primary"><svg><use href="#i-plus"/></svg><span>Add photos</span></button>
+                </div>
             </div>
         </div>
+
+        <aside id="sidebar">
+            <nav class="tabs" role="tablist">
+                <button class="tab active" data-tab="canvas" role="tab"><svg><use href="#i-sliders"/></svg>Canvas</button>
+                <button class="tab" data-tab="photo" role="tab"><svg><use href="#i-image"/></svg>Edit</button>
+                <button class="tab" data-tab="layers" role="tab"><svg><use href="#i-layers"/></svg>Layers <span id="layer-count" class="count">0</span></button>
+            </nav>
+
+            <div class="panels">
+                <!-- CANVAS TAB -->
+                <section class="panel active" id="panel-canvas">
+                    <div class="field">
+                        <label for="preset-select">Preset</label>
+                        <select id="preset-select"></select>
+                    </div>
+
+                    <div class="field">
+                        <label>Size (px)</label>
+                        <div class="size-row">
+                            <input type="number" id="canvas-w" min="100" max="6000" step="1" aria-label="Canvas width">
+                            <span class="size-x">×</span>
+                            <input type="number" id="canvas-h" min="100" max="6000" step="1" aria-label="Canvas height">
+                            <button id="swap-size-btn" class="icon-btn" title="Swap orientation"><svg><use href="#i-swap"/></svg></button>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Background</label>
+                        <div class="bg-row">
+                            <input type="color" id="bg-color" value="#ffffff" title="Background color">
+                            <label class="check"><input type="checkbox" id="bg-transparent"> Transparent</label>
+                        </div>
+                        <div class="swatches" id="bg-swatches"></div>
+                    </div>
+
+                    <hr class="sep">
+
+                    <div class="field">
+                        <label>Auto layout</label>
+                        <div class="layout-grid">
+                            <button class="layout-btn" data-layout="grid" title="Arrange into an even grid">
+                                <svg viewBox="0 0 40 40"><rect x="3" y="3" width="16" height="16" rx="2.5"/><rect x="21" y="3" width="16" height="16" rx="2.5"/><rect x="3" y="21" width="16" height="16" rx="2.5"/><rect x="21" y="21" width="16" height="16" rx="2.5"/></svg>
+                                <span>Grid</span>
+                            </button>
+                            <button class="layout-btn" data-layout="columns" title="Vertical strips">
+                                <svg viewBox="0 0 40 40"><rect x="3" y="3" width="10" height="34" rx="2.5"/><rect x="15" y="3" width="10" height="34" rx="2.5"/><rect x="27" y="3" width="10" height="34" rx="2.5"/></svg>
+                                <span>Columns</span>
+                            </button>
+                            <button class="layout-btn" data-layout="rows" title="Horizontal strips">
+                                <svg viewBox="0 0 40 40"><rect x="3" y="3" width="34" height="10" rx="2.5"/><rect x="3" y="15" width="34" height="10" rx="2.5"/><rect x="3" y="27" width="34" height="10" rx="2.5"/></svg>
+                                <span>Rows</span>
+                            </button>
+                            <button class="layout-btn" data-layout="spotlight" title="One big photo, the rest stacked beside it">
+                                <svg viewBox="0 0 40 40"><rect x="3" y="3" width="21" height="34" rx="2.5"/><rect x="26" y="3" width="11" height="16" rx="2.5"/><rect x="26" y="21" width="11" height="16" rx="2.5"/></svg>
+                                <span>Spotlight</span>
+                            </button>
+                            <button class="layout-btn" data-layout="scatter" title="Playful scattered arrangement">
+                                <svg viewBox="0 0 40 40"><rect x="5" y="7" width="15" height="15" rx="2.5" transform="rotate(-8 12 14)"/><rect x="21" y="5" width="14" height="14" rx="2.5" transform="rotate(7 28 12)"/><rect x="13" y="21" width="15" height="15" rx="2.5" transform="rotate(4 20 28)"/></svg>
+                                <span>Scatter</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Spacing <span class="field-value" id="gap-value">16 px</span></label>
+                        <input type="range" id="gap-range" min="0" max="80" value="16">
+                    </div>
+
+                    <hr class="sep">
+
+                    <div class="field">
+                        <label>Export</label>
+                        <div class="export-row">
+                            <select id="export-scale" aria-label="Export scale">
+                                <option value="0.5">0.5×</option>
+                                <option value="1" selected>1×</option>
+                                <option value="2">2×</option>
+                            </select>
+                            <select id="export-format" aria-label="Export format">
+                                <option value="png" selected>PNG</option>
+                                <option value="jpeg">JPEG</option>
+                            </select>
+                        </div>
+                        <p class="hint" id="export-size-hint"></p>
+                    </div>
+
+                    <hr class="sep">
+
+                    <button id="clear-btn" class="btn danger-ghost full"><svg><use href="#i-trash"/></svg><span>Clear canvas</span></button>
+                </section>
+
+                <!-- EDIT TAB -->
+                <section class="panel" id="panel-photo">
+                    <div id="photo-empty" class="empty-hint">
+                        <svg><use href="#i-image"/></svg>
+                        <p>Select a photo or text on the canvas to edit it.</p>
+                    </div>
+
+                    <div id="photo-props" hidden>
+                        <div class="field">
+                            <label>Filter</label>
+                            <div class="chips" id="filter-chips"></div>
+                        </div>
+                        <div class="field">
+                            <label>Brightness <span class="field-value" id="brightness-value">100%</span></label>
+                            <input type="range" id="brightness-range" min="50" max="150" value="100">
+                        </div>
+                        <div class="field">
+                            <label>Contrast <span class="field-value" id="contrast-value">100%</span></label>
+                            <input type="range" id="contrast-range" min="50" max="150" value="100">
+                        </div>
+                        <div class="field">
+                            <label>Saturation <span class="field-value" id="saturation-value">100%</span></label>
+                            <input type="range" id="saturation-range" min="0" max="200" value="100">
+                        </div>
+                        <hr class="sep">
+                        <div class="field">
+                            <label>Border <span class="field-value" id="border-value">0 px</span></label>
+                            <div class="border-row">
+                                <input type="range" id="border-range" min="0" max="40" value="0">
+                                <input type="color" id="border-color" value="#ffffff" title="Border color">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Shadow <span class="field-value" id="shadow-value">0</span></label>
+                            <input type="range" id="shadow-range" min="0" max="60" value="0">
+                        </div>
+                        <div class="field">
+                            <label>Corner radius <span class="field-value" id="radius-value">0%</span></label>
+                            <input type="range" id="radius-range" min="0" max="50" value="0">
+                        </div>
+                        <div class="field">
+                            <label>Opacity <span class="field-value" id="opacity-value">100%</span></label>
+                            <input type="range" id="opacity-range" min="10" max="100" value="100">
+                        </div>
+                        <hr class="sep">
+                        <div class="field">
+                            <label>Rotation</label>
+                            <div class="rot-row">
+                                <input type="number" id="rotation-input" min="-360" max="360" step="1" value="0">
+                                <button id="rotate-ccw-btn" class="icon-btn" title="Rotate 90° counter-clockwise"><svg><use href="#i-rotate-ccw"/></svg></button>
+                                <button id="rotate-cw-btn" class="icon-btn" title="Rotate 90° clockwise"><svg><use href="#i-rotate-cw"/></svg></button>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Flip</label>
+                            <div class="btn-row">
+                                <button id="flip-h-btn" class="btn small"><svg><use href="#i-flip-h"/></svg><span>Horizontal</span></button>
+                                <button id="flip-v-btn" class="btn small"><svg><use href="#i-flip-v"/></svg><span>Vertical</span></button>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Order</label>
+                            <div class="btn-row">
+                                <button id="forward-btn" class="btn small"><svg><use href="#i-up"/></svg><span>Forward</span></button>
+                                <button id="backward-btn" class="btn small"><svg><use href="#i-down"/></svg><span>Backward</span></button>
+                            </div>
+                        </div>
+                        <hr class="sep">
+                        <div class="btn-row">
+                            <button id="duplicate-btn" class="btn small"><svg><use href="#i-copy"/></svg><span>Duplicate</span></button>
+                            <button id="delete-btn" class="btn small danger"><svg><use href="#i-trash"/></svg><span>Delete</span></button>
+                        </div>
+                        <p class="hint">Hold <kbd>Shift</kbd> while resizing to lock the aspect ratio, or while rotating to snap to 15°. Nudge with arrow keys.</p>
+                    </div>
+
+                    <div id="text-props" hidden>
+                        <div class="field">
+                            <label>Font</label>
+                            <select id="text-font"></select>
+                        </div>
+                        <div class="field">
+                            <label>Size &amp; style</label>
+                            <div class="rot-row">
+                                <input type="number" id="text-size" min="8" max="800" step="1">
+                                <button id="text-bold-btn" class="icon-btn text-bold" title="Bold">B</button>
+                                <input type="color" id="text-color" value="#111111" title="Text color">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Opacity <span class="field-value" id="t-opacity-value">100%</span></label>
+                            <input type="range" id="t-opacity-range" min="10" max="100" value="100">
+                        </div>
+                        <div class="field">
+                            <label>Rotation</label>
+                            <div class="rot-row">
+                                <input type="number" id="t-rotation-input" min="-360" max="360" step="1" value="0">
+                                <button id="t-rotate-ccw-btn" class="icon-btn" title="Rotate 90° counter-clockwise"><svg><use href="#i-rotate-ccw"/></svg></button>
+                                <button id="t-rotate-cw-btn" class="icon-btn" title="Rotate 90° clockwise"><svg><use href="#i-rotate-cw"/></svg></button>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Order</label>
+                            <div class="btn-row">
+                                <button id="t-forward-btn" class="btn small"><svg><use href="#i-up"/></svg><span>Forward</span></button>
+                                <button id="t-backward-btn" class="btn small"><svg><use href="#i-down"/></svg><span>Backward</span></button>
+                            </div>
+                        </div>
+                        <hr class="sep">
+                        <div class="btn-row">
+                            <button id="t-duplicate-btn" class="btn small"><svg><use href="#i-copy"/></svg><span>Duplicate</span></button>
+                            <button id="t-delete-btn" class="btn small danger"><svg><use href="#i-trash"/></svg><span>Delete</span></button>
+                        </div>
+                        <p class="hint">Double-click the text on the canvas to edit it. Drag a corner handle to scale the type size.</p>
+                    </div>
+                </section>
+
+                <!-- LAYERS TAB -->
+                <section class="panel" id="panel-layers">
+                    <div id="layers-list"></div>
+                    <div id="layers-empty" class="empty-hint">
+                        <svg><use href="#i-layers"/></svg>
+                        <p>No photos yet — add some and they'll appear here. Drag rows to reorder.</p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="sidebar-footer">Autosaves in your browser · Made with ♥ for Bethany</div>
+        </aside>
+    </main>
+
+    <input type="file" id="file-input" accept="image/*" multiple hidden>
+
+    <div id="drop-overlay" hidden>
+        <div class="drop-card"><svg><use href="#i-upload"/></svg><span>Drop photos to add them</span></div>
     </div>
 
-    <!-- Add a footer -->
-    <footer>
-        <p>Created by Bethany • © 2025</p>
-        <p>Upload, arrange, and download beautiful photo collages in seconds!</p>
-    </footer>
+    <div id="toasts" aria-live="polite"></div>
 
-    <!-- Trash Bin -->
-    <div id="trash-bin" title="Drag images here to delete or click to clear all">
-        <i class="fas fa-trash-alt"></i>
-    </div>
-
-    <!-- Include the script at the end of the body -->
     <script src="script.js"></script>
 </body>
 </html>
