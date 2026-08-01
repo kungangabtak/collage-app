@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Local development server for Bethany's Collage Studio.
+"""Optional developer tool: local server for Bethany's Collage Studio.
+
+Regular users don't need this — just double-click "OPEN COLLAGE STUDIO.html".
 
 Usage:
     python3 serve.py [port]     # defaults to port 5500

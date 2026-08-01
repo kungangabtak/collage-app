@@ -1,10 +1,22 @@
 # Bethany's Collage Studio
 
+## How to open the app (no tech skills needed)
+
+1. Download the project (on GitHub: **Code → Download ZIP**) and unzip it.
+2. Open the extracted folder.
+3. Double-click **`OPEN COLLAGE STUDIO.html`**.
+
+The app opens in your default web browser. **No installation, terminal, account, or internet connection is required** — everything runs on your computer, and your photos never leave it.
+
+---
+
 A fast, fully offline photo-collage editor that runs in the browser. Upload photos, arrange them freely or with one-click auto layouts, then export a pixel-perfect PNG or JPEG.
 
-No build step, no frameworks, no CDNs — just `index.html`, `styles.css`, and `script.js`.
+No build step, no frameworks, no CDNs — just `OPEN COLLAGE STUDIO.html`, `styles.css`, and `script.js` (`index.html` is a small stub that redirects to the app, so hosted setups like GitHub Pages keep working).
 
-## Run it locally
+## Optional: developer server
+
+Only needed for development — regular use is just double-clicking `OPEN COLLAGE STUDIO.html` as described above.
 
 ```bash
 python3 serve.py
